@@ -194,12 +194,12 @@ Result: Only email is masked, phone is preserved.
 - **Stateless**: No data storage or logging
 - **No training**: Your data is never used for ML training
 - **GDPR/CCPA**: Compliant by design
-- **Open Source**: https://github.com/KikuAI-Lab/masker
+- **Open Source**: https://github.com/kiku-jw/masker
 
 ---
 
 ## Support
 
-- Documentation: https://github.com/KikuAI-Lab/masker/wiki
+- Documentation: https://github.com/kiku-jw/masker/wiki
 - Email: support@kikuai.dev
-- GitHub Issues: https://github.com/KikuAI-Lab/masker/issues
+- GitHub Issues: https://github.com/kiku-jw/masker/issues

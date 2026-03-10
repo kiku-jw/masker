@@ -69,7 +69,7 @@ response = client.chat.completions.create(
 ## Installation
 
 ```bash
-git clone https://github.com/KikuAI-Lab/masker.git
+git clone https://github.com/kiku-jw/masker.git
 cd masker
 cp .env.example .env
 docker-compose up -d
@@ -87,12 +87,12 @@ See [.env.example](.env.example) for all options.
 
 ## Documentation
 
-📖 **[Wiki](https://github.com/KikuAI-Lab/masker/wiki)** — full documentation
+📖 **[Wiki](https://github.com/kiku-jw/masker/wiki)** — full documentation
 
-- [Quick Start](https://github.com/KikuAI-Lab/masker/wiki/Quick-Start)
-- [API Reference](https://github.com/KikuAI-Lab/masker/wiki/API-Reference)
-- [LLM Proxy](https://github.com/KikuAI-Lab/masker/wiki/LLM-Proxy)
-- [Privacy Policy](https://github.com/KikuAI-Lab/masker/wiki/Privacy-Policy)
+- [Quick Start](https://github.com/kiku-jw/masker/wiki/Quick-Start)
+- [API Reference](https://github.com/kiku-jw/masker/wiki/API-Reference)
+- [LLM Proxy](https://github.com/kiku-jw/masker/wiki/LLM-Proxy)
+- [Privacy Policy](https://github.com/kiku-jw/masker/wiki/Privacy-Policy)
 
 ## API
 

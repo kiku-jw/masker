@@ -21,9 +21,9 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/KikuAI-Lab/masker"
-Documentation = "https://github.com/KikuAI-Lab/masker/wiki"
-Repository = "https://github.com/KikuAI-Lab/masker"
+Homepage = "https://github.com/kiku-jw/masker"
+Documentation = "https://github.com/kiku-jw/masker/wiki"
+Repository = "https://github.com/kiku-jw/masker"
 
 [tool.ruff]
 target-version = "py311"

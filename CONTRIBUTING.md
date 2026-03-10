@@ -13,7 +13,7 @@ Thank you for your interest in contributing to Masker! This document provides gu
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/KikuAI-Lab/masker.git
+git clone https://github.com/kiku-jw/masker.git
 cd masker
 ```
 

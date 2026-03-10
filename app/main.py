@@ -86,7 +86,7 @@ app = FastAPI(
 
     ## 📖 Full Documentation
 
-    See [Wiki](https://github.com/KikuAI-Lab/masker/wiki) for complete documentation.
+    See [Wiki](https://github.com/kiku-jw/masker/wiki) for complete documentation.
     """,
     version=settings.api_version,
     lifespan=lifespan,
