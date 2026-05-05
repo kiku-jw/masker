@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field, model_validator
 from app.core.config import settings
 
 # Entity types
-EntityType = Literal["EMAIL", "PHONE", "CARD", "PERSON"]
+EntityType = Literal["EMAIL", "PHONE", "CARD", "PERSON", "SENSITIVE_WORD"]
 
 
 class TextRequest(BaseModel):

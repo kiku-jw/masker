@@ -26,6 +26,7 @@ PLACEHOLDER_TEMPLATES = {
     "EMAIL": "<EMAIL>",
     "PHONE": "<PHONE>",
     "CARD": "<CARD>",
+    "SENSITIVE_WORD": "<SENSITIVE_WORD>",
 }
 
 # Default mask token
