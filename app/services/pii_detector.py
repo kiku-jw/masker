@@ -32,6 +32,7 @@ class PIIDetector:
     - PHONE: Phone numbers (international formats)
     - CARD: Credit/debit card numbers
     - PERSON: Person names (via spaCy NER)
+    - SENSITIVE_WORD: User-defined sensitive words (via MASKER_SENSITIVE_WORDS env var)
     """
 
     # Regex patterns for PII detection
@@ -154,6 +155,24 @@ class PIIDetector:
 
         return entities
 
+    def _detect_sensitive_words(self, text: str) -> list[DetectedEntity]:
+        """Detect configured sensitive words using word boundary regex."""
+        from app.core.config import settings
+
+        entities = []
+        for word in settings.sensitive_word_list:
+            pattern = re.compile(rf"\b{re.escape(word)}\b", re.IGNORECASE)
+            for match in pattern.finditer(text):
+                entities.append(
+                    DetectedEntity(
+                        type="SENSITIVE_WORD",
+                        value=match.group(),
+                        start=match.start(),
+                        end=match.end(),
+                    )
+                )
+        return entities
+
     def _remove_overlaps(self, entities: list[DetectedEntity]) -> list[DetectedEntity]:
         """Remove overlapping entities, preferring regex matches.
 
@@ -171,7 +190,7 @@ class PIIDetector:
 
         # Sort by start position, then by priority (more specific types first)
         # CARD has higher priority than PHONE to avoid card numbers being detected as phones
-        priority = {"EMAIL": 0, "CARD": 1, "PHONE": 2, "PERSON": 3}
+        priority = {"EMAIL": 0, "CARD": 1, "PHONE": 2, "PERSON": 3, "SENSITIVE_WORD": 4}
         sorted_entities = sorted(entities, key=lambda e: (e.start, priority.get(e.type, 99)))
 
         result = []
@@ -207,8 +226,11 @@ class PIIDetector:
         # Then, detect using NER
         ner_entities = self._detect_by_ner(text, language)
 
+        # Detect sensitive words
+        sensitive_entities = self._detect_sensitive_words(text)
+
         # Combine and remove overlaps
-        all_entities = regex_entities + ner_entities
+        all_entities = regex_entities + ner_entities + sensitive_entities
         unique_entities = self._remove_overlaps(all_entities)
 
         # Filter by entity types if specified
