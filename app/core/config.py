@@ -38,6 +38,15 @@ class Settings(BaseSettings):
     placeholder_email: str = "<EMAIL>"
     placeholder_phone: str = "<PHONE>"
     placeholder_card: str = "<CARD>"
+    placeholder_sensitive_word: str = "<SENSITIVE_WORD>"
+
+    # Sensitive word detection (comma-separated list)
+    sensitive_words: str = ""
+
+    @property
+    def sensitive_word_list(self) -> list[str]:
+        """Parse comma-separated sensitive words."""
+        return [w.strip() for w in self.sensitive_words.split(",") if w.strip()]
 
     # ========================================
     # Safe-to-LLM Proxy Settings
