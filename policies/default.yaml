@@ -14,6 +14,7 @@ categories:
   phone: mask
   card: drop
   person: placeholder
+  sensitive_word: mask
 
 # Behavior when redaction fails:
 #   - closed: block the request (do not forward to upstream)

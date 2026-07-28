@@ -29,6 +29,7 @@ Masker detects and redacts:
 - **PHONE** — phone numbers  
 - **CARD** — credit card numbers
 - **PERSON** — person names (AI-powered)
+- **SENSITIVE_WORD** — custom words and phrases configured by the operator
 
 ## Quick Start
 
@@ -86,7 +87,10 @@ docker-compose up -d
 MASKER_API_KEYS=sk-key1:tenant1,sk-key2:tenant2
 MASKER_UPSTREAM_URL=https://api.openai.com/v1/chat/completions
 MASKER_DEFAULT_FAIL_MODE=closed
+MASKER_SENSITIVE_WORDS=secret,confidential,internal project
 ```
+
+`MASKER_SENSITIVE_WORDS` is a comma-separated, case-insensitive list.
 
 See [.env.example](.env.example) for all options.
 

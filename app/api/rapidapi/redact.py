@@ -129,7 +129,7 @@ async def rapidapi_redact(request: RapidAPIRedactRequest) -> RapidAPIRedactRespo
                 path=e.path,
                 start=e.start,
                 end=e.end,
-                score=1.0 if e.type in ("EMAIL", "PHONE", "CARD") else 0.85,
+                score=1.0 if e.type in ("EMAIL", "PHONE", "CARD", "SENSITIVE_WORD") else 0.85,
             )
             for e in json_entities
         ]
