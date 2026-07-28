@@ -65,8 +65,8 @@ def get_entity_score(entity: DetectedEntity) -> float:
     Returns:
         Confidence score (0.0 to 1.0)
     """
-    # Regex-based detections (EMAIL, PHONE, CARD) get perfect score
-    if entity.type in ("EMAIL", "PHONE", "CARD"):
+    # Deterministic pattern-based detections get a perfect score
+    if entity.type in ("EMAIL", "PHONE", "CARD", "SENSITIVE_WORD"):
         return REGEX_SCORE
 
     # NER-based detections (PERSON) get a default score

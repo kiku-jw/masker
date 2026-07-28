@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field, model_validator
 from app.core.config import settings
 
 # Supported entity types for filtering
-EntityTypeFilter = Literal["PERSON", "EMAIL", "PHONE", "CARD"]
+EntityTypeFilter = Literal["PERSON", "EMAIL", "PHONE", "CARD", "SENSITIVE_WORD"]
 
 # Redaction modes
 RedactionMode = Literal["mask", "placeholder"]
@@ -81,7 +81,8 @@ class RedactedItem(BaseModel):
     """Schema for a single redacted item in the response."""
 
     entity_type: str = Field(
-        ..., description="Type of the detected entity (PERSON, EMAIL, PHONE, CARD)"
+        ...,
+        description=("Type of the detected entity (PERSON, EMAIL, PHONE, CARD, SENSITIVE_WORD)"),
     )
     path: str | None = Field(
         default=None, description="JSON path to the field (only for JSON mode)"

@@ -93,15 +93,44 @@ class TestSensitiveWords:
         assert "EMAIL" in types
         assert "SENSITIVE_WORD" not in types
 
-    def test_cyrillic_word_boundary(self, client: TestClient, monkeypatch):
-        """Should detect Cyrillic sensitive words."""
-        monkeypatch.setattr(settings, "sensitive_words", "СВО,спецоперация")
-        response = client.post("/api/v1/detect", json={"text": "Новости о СВО и спецоперации"})
+    def test_earlier_sensitive_phrase_does_not_override_email(
+        self, client: TestClient, monkeypatch
+    ):
+        """Should prefer the full EMAIL even when a sensitive phrase starts earlier."""
+        monkeypatch.setattr(settings, "sensitive_words", "Contact test")
+        response = client.post("/api/v1/mask", json={"text": "Contact test@example.com"})
+
+        assert response.status_code == 200
+        data = response.json()
+        assert data["text"] == "Contact ***"
+        assert "@example.com" not in data["text"]
+        types = [entity["type"] for entity in data["entities"]]
+        assert "EMAIL" in types
+        assert "SENSITIVE_WORD" not in types
+
+    def test_sensitive_term_can_end_with_punctuation(self, client: TestClient, monkeypatch):
+        """Should detect configured terms that end with non-word characters."""
+        monkeypatch.setattr(settings, "sensitive_words", "C++")
+        response = client.post("/api/v1/detect", json={"text": "Use C++ safely"})
 
         assert response.status_code == 200
         data = response.json()
         sw = [e for e in data["entities"] if e["type"] == "SENSITIVE_WORD"]
-        assert len(sw) >= 1
+        assert len(sw) == 1
+        assert sw[0]["value"] == "C++"
+
+    def test_cyrillic_word_boundary(self, client: TestClient, monkeypatch):
+        """Should detect Cyrillic sensitive words."""
+        monkeypatch.setattr(settings, "sensitive_words", "пароль,секрет")
+        response = client.post(
+            "/api/v1/detect",
+            json={"text": "Введите пароль и секрет.", "language": "ru"},
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+        sw = [e for e in data["entities"] if e["type"] == "SENSITIVE_WORD"]
+        assert {entity["value"] for entity in sw} == {"пароль", "секрет"}
 
     def test_sensitive_word_at_text_boundaries(self, client: TestClient, monkeypatch):
         """Should detect words at start and end of text."""

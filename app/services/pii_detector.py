@@ -161,7 +161,7 @@ class PIIDetector:
 
         entities = []
         for word in settings.sensitive_word_list:
-            pattern = re.compile(rf"\b{re.escape(word)}\b", re.IGNORECASE)
+            pattern = re.compile(rf"(?<!\w){re.escape(word)}(?!\w)", re.IGNORECASE)
             for match in pattern.finditer(text):
                 entities.append(
                     DetectedEntity(
@@ -188,23 +188,29 @@ class PIIDetector:
         if not entities:
             return []
 
-        # Sort by start position, then by priority (more specific types first)
-        # CARD has higher priority than PHONE to avoid card numbers being detected as phones
+        # Resolve overlaps by type priority, regardless of which match starts first.
+        # CARD has higher priority than PHONE to avoid card numbers being detected as phones.
         priority = {"EMAIL": 0, "CARD": 1, "PHONE": 2, "PERSON": 3, "SENSITIVE_WORD": 4}
-        sorted_entities = sorted(entities, key=lambda e: (e.start, priority.get(e.type, 99)))
+        sorted_entities = sorted(
+            entities,
+            key=lambda e: (
+                priority.get(e.type, 99),
+                e.start,
+                -(e.end - e.start),
+            ),
+        )
 
-        result = []
-        last_end = -1
+        result: list[DetectedEntity] = []
 
         for entity in sorted_entities:
-            # Skip if this entity overlaps with the previous one
-            if entity.start < last_end:
+            if any(
+                entity.start < existing.end and existing.start < entity.end for existing in result
+            ):
                 continue
 
             result.append(entity)
-            last_end = entity.end
 
-        return result
+        return sorted(result, key=lambda e: (e.start, e.end))
 
     def detect(
         self, text: str, language: str = "en", entity_types: list[str] | None = None
